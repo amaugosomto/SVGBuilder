@@ -1,0 +1,135 @@
+$light-color: #f4f4f4;
+$dark-color: #000;
+//$primary-color: #e0ffff;
+$primary-color: #0e6cff;
+$secondary_color: #ff8700;
+$danger_color: red;
+
+//set color based on bg
+@function set-text-color($color) {
+  @if(lightness($color) > 70) {
+    @return #333;
+  } @else {
+    @return #fff;
+  }
+}
+
+@function lighten-color($color, $percent) {
+  @return lighten($color, $percent);
+}
+
+//set background and text color
+@mixin set-background($color) {
+  background-color: $color;
+  color: set-text-color($color);
+}
+
+// Buttons
+.btn {
+  display: inline-block;
+  margin: 3px;
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+  cursor: pointer;
+
+  &:hover{
+    transform: scale(.90);
+  }
+}
+
+.btn-primary{
+  @include set-background(lighten($primary-color, 10%));
+
+  &:hover{
+    background-color: #fff;
+    color: $primary-color;
+    transition: .5s all;
+  }
+}
+
+.btn-secondary{
+  @include set-background(lighten($secondary-color, 10%));
+
+  &:hover{
+    background-color: #fff;
+    color: $secondary-color;
+    transition: .5s all;
+  }
+}
+
+.btn-danger{
+  @include set-background(lighten($danger-color, 10%));
+
+  &:hover{
+    background-color: lighten($danger-color, 10%);
+    color: #fff;
+  }
+}
+
+// Utilities
+.container {
+  max-width: 1100px;
+  padding: 0 30px;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.form-control{
+  display: block;
+  width: 100%;
+  height: calc(1.5em + .5rem + 2px);
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+  font-weight: 400;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.text-right {
+  text-align: right;
+}
+.text-center{
+  text-align: center;
+}
+  //
+  
+// Margin & padding classes
+$spaceAmounts: (1, 2, 3, 4, 5);
+
+@each $space in $spaceAmounts {
+  .m-#{$space} {
+    margin: #{$space}rem;
+  }
+  .my-#{$space} {
+    margin: #{$space}rem 0;
+  }
+  .mx-#{$space} {
+    margin: 0 #{$space}rem;
+  }
+  .mt-#{$space} {
+    margin-top: #{$space}rem;
+  }
+  .mb-#{$space} {
+    margin-bottom: #{$space}rem;
+  }
+
+  .p-#{$space} {
+    padding: #{$space}rem;
+  }
+  .py-#{$space} {
+    padding: #{$space}rem 0;
+  }
+  .px-#{$space} {
+    padding: 0 #{$space}rem;
+  }
+}
+
+// Responsiveness
