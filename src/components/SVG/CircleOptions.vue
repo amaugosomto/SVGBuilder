@@ -16,7 +16,7 @@
     <div class="options">
       <div>
         <label for="cx"> <span style="color: red">*</span> cx</label>
-        <input class="form-control" type="text" 
+        <input class="form-control" type="number" min="0" 
           id="cx"  name="search" placeholder="cx.."
           v-model="cx">
           <small id="ctxValidation" class="validator" style="display:none"></small>
@@ -24,14 +24,14 @@
       
       <div class="mx-1">
         <label for="cy">cy</label>
-        <input type="text" id="cy" class="form-control" 
+        <input type="number" min="0" id="cy" class="form-control" 
           name="search" placeholder="cy.." v-model="cy">
           <small id="cyValidation" class="validator" style="display:none"></small>
       </div>
       
       <div>
         <label for="r">r</label>
-        <input type="text" id="r" class="form-control" 
+        <input type="number" min="0" id="r" class="form-control" 
           name="search" placeholder="radius.." v-model="r">
           <small id="rValidation" class="validator" style="display:none"></small>
       </div>
