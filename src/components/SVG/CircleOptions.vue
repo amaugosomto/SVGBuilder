@@ -18,21 +18,21 @@
         <label for="cx"> <span style="color: red">*</span> cx</label>
         <input class="form-control" type="number" min="0" 
           id="cx"  name="search" placeholder="cx.."
-          v-model="cx">
+          :value="cx" @input="updateValue($event)">
           <small id="ctxValidation" class="validator" style="display:none"></small>
       </div>
       
       <div class="mx-1">
         <label for="cy">cy</label>
         <input type="number" min="0" id="cy" class="form-control" 
-          name="search" placeholder="cy.." v-model="cy">
+          name="search" placeholder="cy.." :value="cy" @input="updateValue($event)">
           <small id="cyValidation" class="validator" style="display:none"></small>
       </div>
       
       <div>
         <label for="r">r</label>
         <input type="number" min="0" id="r" class="form-control" 
-          name="search" placeholder="radius.." v-model="r">
+          name="search" placeholder="radius.." :value="r" @input="updateValue($event)">
           <small id="rValidation" class="validator" style="display:none"></small>
       </div>
       
@@ -41,7 +41,7 @@
     <div class="options mt-1">
       <div>
         <label for="stroke">stroke</label>
-        <select name="" id="stroke" class="form-control" v-model="stroke">
+        <select name="" id="stroke" class="form-control" :value="stroke" @input="updateValue($event)">
           <option value="select">select</option>
           <option v-for="color in colors" :key="color" v-bind:value="color">
             {{ color }}
@@ -53,13 +53,13 @@
       <div class="mx-1">
         <label for="strokewidth">stroke width</label>
         <input type="number" min="0" id="strokewidth" class="form-control" 
-          name="search" placeholder="stroke width" v-model="strokeWidth">
+          name="search" placeholder="stroke width" :value="strokeWidth" @input="updateValue($event)">
         <small id="strokewidthValidation" class="validator" style="display:none"></small>
       </div>
       
       <div>
         <label for="fill">fill</label>
-        <select name="" id="fill" class="form-control" v-model="fill">
+        <select name="" id="fill" class="form-control" :value="fill" @input="updateValue($event)">
           <option value="select">select</option>
           <option v-for="color in colors" :key="color" v-bind:value="color">
             {{ color }}
@@ -97,6 +97,7 @@ small{
 
 <script>
 import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import { mapState } from "vuex";
 
 import { required } from "../../misc/validators";
@@ -105,156 +106,6 @@ import { validatorMixin } from "../../misc/mixins";
 export default {
   data() {
     return {
-      colors : [
-        "AliceBlue",
-        "AntiqueWhite",
-        "Aqua",
-        "Aquamarine",
-        "Azure",
-        "Beige",
-        "Bisque",
-        "Black",
-        "BlanchedAlmond",
-        "Blue",
-        "BlueViolet",
-        "Brown",
-        "BurlyWood",
-        "CadetBlue",
-        "Chartreuse",
-        "Chocolate",
-        "Coral",
-        "CornflowerBlue",
-        "Cornsilk",
-        "Crimson",
-        "Cyan",
-        "DarkBlue",
-        "DarkCyan",
-        "DarkGoldenRod",
-        "DarkGray",
-        "DarkGrey",
-        "DarkGreen",
-        "DarkKhaki",
-        "DarkMagenta",
-        "DarkOliveGreen",
-        "DarkOrange",
-        "DarkOrchid",
-        "DarkRed",
-        "DarkSalmon",
-        "DarkSeaGreen",
-        "DarkSlateBlue",
-        "DarkSlateGray",
-        "DarkSlateGrey",
-        "DarkTurquoise",
-        "DarkViolet",
-        "DeepPink",
-        "DeepSkyBlue",
-        "DimGray",
-        "DimGrey",
-        "DodgerBlue",
-        "FireBrick",
-        "FloralWhite",
-        "ForestGreen",
-        "Fuchsia",
-        "Gainsboro",
-        "GhostWhite",
-        "Gold",
-        "GoldenRod",
-        "Gray",
-        "Grey",
-        "Green",
-        "GreenYellow",
-        "HoneyDew",
-        "HotPink",
-        "IndianRed",
-        "Indigo",
-        "Ivory",
-        "Khaki",
-        "Lavender",
-        "LavenderBlush",
-        "LawnGreen",
-        "LemonChiffon",
-        "LightBlue",
-        "LightCoral",
-        "LightCyan",
-        "LightGoldenRodYellow",
-        "LightGray",
-        "LightGrey",
-        "LightGreen",
-        "LightPink",
-        "LightSalmon",
-        "LightSeaGreen",
-        "LightSkyBlue",
-        "LightSlateGray",
-        "LightSlateGrey",
-        "LightSteelBlue",
-        "LightYellow",
-        "Lime",
-        "LimeGreen",
-        "Linen",
-        "Magenta",
-        "Maroon",
-        "MediumAquaMarine",
-        "MediumBlue",
-        "MediumOrchid",
-        "MediumPurple",
-        "MediumSeaGreen",
-        "MediumSlateBlue",
-        "MediumSpringGreen",
-        "MediumTurquoise",
-        "MediumVioletRed",
-        "MidnightBlue",
-        "MintCream",
-        "MistyRose",
-        "Moccasin",
-        "NavajoWhite",
-        "Navy",
-        "OldLace",
-        "Olive",
-        "OliveDrab",
-        "Orange",
-        "OrangeRed",
-        "Orchid",
-        "PaleGoldenRod",
-        "PaleGreen",
-        "PaleTurquoise",
-        "PaleVioletRed",
-        "PapayaWhip",
-        "PeachPuff",
-        "Peru",
-        "Pink",
-        "Plum",
-        "PowderBlue",
-        "Purple",
-        "RebeccaPurple",
-        "Red",
-        "RosyBrown",
-        "RoyalBlue",
-        "SaddleBrown",
-        "Salmon",
-        "SandyBrown",
-        "SeaGreen",
-        "SeaShell",
-        "Sienna",
-        "Silver",
-        "SkyBlue",
-        "SlateBlue",
-        "SlateGray",
-        "SlateGrey",
-        "Snow",
-        "SpringGreen",
-        "SteelBlue",
-        "Tan",
-        "Teal",
-        "Thistle",
-        "Tomato",
-        "Turquoise",
-        "Violet",
-        "Wheat",
-        "White",
-        "WhiteSmoke",
-        "Yellow",
-        "YellowGreen",
-      ],
       presetColors: {
         redGreenCircle: {
           cx: 50,
@@ -298,12 +149,12 @@ export default {
       if (value !== "select"){
         let presetValue = this.presetColors[value];
 
-        this.circleOptionsComponent.cx = presetValue.cx;
-        this.circleOptionsComponent.cy = presetValue.cy;
-        this.circleOptionsComponent.r = presetValue.r;
-        this.circleOptionsComponent.strokeWidth = presetValue.strokeWidth;
-        this.circleOptionsComponent.stroke = presetValue.stroke;
-        this.circleOptionsComponent.fill = presetValue.fill;
+        this.circleState.circleOptionsComponent.cx = presetValue.cx;
+        this.circleState.circleOptionsComponent.cy = presetValue.cy;
+        this.circleState.circleOptionsComponent.r = presetValue.r;
+        this.circleState.circleOptionsComponent.strokeWidth = presetValue.strokeWidth;
+        this.circleState.circleOptionsComponent.stroke = presetValue.stroke;
+        this.circleState.circleOptionsComponent.fill = presetValue.fill;
 
         this.$store.commit("saveToLocalStorage");
       }
@@ -321,12 +172,12 @@ export default {
         return;
 
       let circleData = {
-        cx: this.circleOptionsComponent.cx,
-        cy: this.circleOptionsComponent.cy,
-        r: this.circleOptionsComponent.r,
-        strokeWidth: this.circleOptionsComponent.strokeWidth,
-        stroke: this.circleOptionsComponent.stroke,
-        fill: this.circleOptionsComponent.fill,
+        cx: this.circleState.circleOptionsComponent.cx,
+        cy: this.circleState.circleOptionsComponent.cy,
+        r: this.circleState.circleOptionsComponent.r,
+        strokeWidth: this.circleState.circleOptionsComponent.strokeWidth,
+        stroke: this.circleState.circleOptionsComponent.stroke,
+        fill: this.circleState.circleOptionsComponent.fill,
       }
 
       let payload = {
@@ -337,7 +188,8 @@ export default {
       this.saveSVGValues(payload);
     },
     ...mapActions([
-      "saveSVGValues"
+      "saveSVGValues",
+      "setCircleOptionsComponentUpdate"
     ]),
     validateCircleSVGOptions(){
       
@@ -405,70 +257,43 @@ export default {
       }
 
       this.$store.commit("saveToLocalStorage");
+    },
+    updateValue(event){
+      let payload = {
+        [event.target.id] : event.target.value,
+        mode: ""
+      }
+
+      this.setCircleOptionsComponentUpdate(payload);
     }
   },
   computed: {
-    ...mapState(["circleOptionsComponent"]),
-    cx: {
-      get() {
-        return this.circleOptionsComponent.cx;
-      },
-      set (value) {
-        let payload = {"cx" : value, mode: ""};
-        this.$store.dispatch("setCircleOptionsComponentUpdate", payload);
-      }
+    ...mapState(["circleState"]),
+    ...mapGetters({colors : 'getColors'}),
+    cx() {
+      return this.circleState.circleOptionsComponent.cx;
     },
-    cy: {
-      get() {
-        return this.circleOptionsComponent.cy;
-      },
-      set (value) {
-        let payload = {"cy" : value, mode: ""};
-        this.$store.dispatch("setCircleOptionsComponentUpdate", payload);
-      }
+    cy() {
+      return this.circleState.circleOptionsComponent.cy;
     },
-    r: {
-      get() {
-        return this.circleOptionsComponent.r;
-      },
-      set (value) {
-        let payload = {"r" : value, mode: ""};
-        this.$store.dispatch("setCircleOptionsComponentUpdate", payload);
-      }
+    r() {
+      return this.circleState.circleOptionsComponent.r;
     },
-    stroke: {
-      get() {
-        return this.circleOptionsComponent.stroke;
-      },
-      set (value) {
-        let payload = {"stroke" : value, mode: ""};
-        this.$store.dispatch("setCircleOptionsComponentUpdate", payload);
-      }
+    stroke() {
+      return this.circleState.circleOptionsComponent.stroke;
     },
-    strokeWidth: {
-      get() {
-        return this.circleOptionsComponent.strokeWidth;
-      },
-      set (value) {
-        let payload = {"strokeWidth" : value, mode: ""};
-        this.$store.dispatch("setCircleOptionsComponentUpdate", payload);
-      }
+    strokeWidth() {
+      return this.circleState.circleOptionsComponent.strokeWidth;
     },
-    fill: {
-      get() {
-        return this.circleOptionsComponent.fill;
-      },
-      set (value) {
-        let payload = {"fill" : value, mode: ""};
-        this.$store.dispatch("setCircleOptionsComponentUpdate", payload);
-      }
+    fill() {
+      return this.circleState.circleOptionsComponent.fill;
     },
     preset: {
       get() {
-        return this.$store.state.circleSVGPreset
+        return this.circleState.circleSVGPreset
       },
       set (value) {
-        this.$store.state.circleSVGPreset = value;
+        this.circleState.circleSVGPreset = value;
         this.$store.commit("saveToLocalStorage");
       }
     }

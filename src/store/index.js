@@ -1,30 +1,167 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import circleState from './modules/circleSVG';
+
 Vue.use(Vuex);
 
+const colors = [
+  "AliceBlue",
+  "AntiqueWhite",
+  "Aqua",
+  "Aquamarine",
+  "Azure",
+  "Beige",
+  "Bisque",
+  "Black",
+  "BlanchedAlmond",
+  "Blue",
+  "BlueViolet",
+  "Brown",
+  "BurlyWood",
+  "CadetBlue",
+  "Chartreuse",
+  "Chocolate",
+  "Coral",
+  "CornflowerBlue",
+  "Cornsilk",
+  "Crimson",
+  "Cyan",
+  "DarkBlue",
+  "DarkCyan",
+  "DarkGoldenRod",
+  "DarkGray",
+  "DarkGrey",
+  "DarkGreen",
+  "DarkKhaki",
+  "DarkMagenta",
+  "DarkOliveGreen",
+  "DarkOrange",
+  "DarkOrchid",
+  "DarkRed",
+  "DarkSalmon",
+  "DarkSeaGreen",
+  "DarkSlateBlue",
+  "DarkSlateGray",
+  "DarkSlateGrey",
+  "DarkTurquoise",
+  "DarkViolet",
+  "DeepPink",
+  "DeepSkyBlue",
+  "DimGray",
+  "DimGrey",
+  "DodgerBlue",
+  "FireBrick",
+  "FloralWhite",
+  "ForestGreen",
+  "Fuchsia",
+  "Gainsboro",
+  "GhostWhite",
+  "Gold",
+  "GoldenRod",
+  "Gray",
+  "Grey",
+  "Green",
+  "GreenYellow",
+  "HoneyDew",
+  "HotPink",
+  "IndianRed",
+  "Indigo",
+  "Ivory",
+  "Khaki",
+  "Lavender",
+  "LavenderBlush",
+  "LawnGreen",
+  "LemonChiffon",
+  "LightBlue",
+  "LightCoral",
+  "LightCyan",
+  "LightGoldenRodYellow",
+  "LightGray",
+  "LightGrey",
+  "LightGreen",
+  "LightPink",
+  "LightSalmon",
+  "LightSeaGreen",
+  "LightSkyBlue",
+  "LightSlateGray",
+  "LightSlateGrey",
+  "LightSteelBlue",
+  "LightYellow",
+  "Lime",
+  "LimeGreen",
+  "Linen",
+  "Magenta",
+  "Maroon",
+  "MediumAquaMarine",
+  "MediumBlue",
+  "MediumOrchid",
+  "MediumPurple",
+  "MediumSeaGreen",
+  "MediumSlateBlue",
+  "MediumSpringGreen",
+  "MediumTurquoise",
+  "MediumVioletRed",
+  "MidnightBlue",
+  "MintCream",
+  "MistyRose",
+  "Moccasin",
+  "NavajoWhite",
+  "Navy",
+  "OldLace",
+  "Olive",
+  "OliveDrab",
+  "Orange",
+  "OrangeRed",
+  "Orchid",
+  "PaleGoldenRod",
+  "PaleGreen",
+  "PaleTurquoise",
+  "PaleVioletRed",
+  "PapayaWhip",
+  "PeachPuff",
+  "Peru",
+  "Pink",
+  "Plum",
+  "PowderBlue",
+  "Purple",
+  "RebeccaPurple",
+  "Red",
+  "RosyBrown",
+  "RoyalBlue",
+  "SaddleBrown",
+  "Salmon",
+  "SandyBrown",
+  "SeaGreen",
+  "SeaShell",
+  "Sienna",
+  "Silver",
+  "SkyBlue",
+  "SlateBlue",
+  "SlateGray",
+  "SlateGrey",
+  "Snow",
+  "SpringGreen",
+  "SteelBlue",
+  "Tan",
+  "Teal",
+  "Thistle",
+  "Tomato",
+  "Turquoise",
+  "Violet",
+  "Wheat",
+  "White",
+  "WhiteSmoke",
+  "Yellow",
+  "YellowGreen",
+]
+
 export default new Vuex.Store({
-  state: {
+  state:{ 
     svgBuilderOptionsComponent: "",
     svgViewComponent: "",
-    circleSVGOptions: {
-      cx: "",
-      cy: "",
-      r: "",
-      stroke: "select",
-      strokeWidth: "",
-      fill: "select"
-    },
     svgMode: "select",
-    circleOptionsComponent: {
-      cx: "",
-      cy: "",
-      r: "",
-      stroke: "select",
-      strokeWidth: "",
-      fill: "select"
-    },
-    circleSVGPreset: "select"
+    colors
   },
   getters: {
     svgBuilderOptionsComponent: state => {
@@ -33,21 +170,13 @@ export default new Vuex.Store({
     getSVGViewComponent: state => {
       return state.svgViewComponent;
     },
-    getCircleSVGOptions: state => {
-      return state.circleSVGOptions;
-    } 
+    getColors : state => {
+      return state.colors
+    }
   },
   mutations: {
     svgBuilderOptionsComponent: (state, value) => {
       state.svgBuilderOptionsComponent = value;
-    },
-    setCircleSvgOptions: (state, value) => {
-      state.circleSVGOptions.cx = value.cx;
-      state.circleSVGOptions.cy = value.cy;
-      state.circleSVGOptions.r = value.r;
-      state.circleSVGOptions.stroke = value.stroke;
-      state.circleSVGOptions.strokeWidth = value.strokeWidth;
-      state.circleSVGOptions.fill = value.fill;
     },
     setSVGViewComponent: (state, value) => {
       state.svgViewComponent = value;
@@ -58,13 +187,12 @@ export default new Vuex.Store({
     svgModeUpdate: (state, value) => {
       state.svgMode = value;
     },
-    circleOptionsComponentUpdate: (state, data) => {
-      state.circleOptionsComponent[data.label] = data.value;
-    },
     resetAll : state => {
       let initialState = {
         svgBuilderOptionsComponent: "",
         svgViewComponent: "",
+        svgMode: "select",
+        colors,
         circleSVGOptions: {
           cx: "",
           cy: "",
@@ -73,7 +201,6 @@ export default new Vuex.Store({
           strokeWidth: "",
           fill: "select"
         },
-        svgMode: "select",
         circleOptionsComponent: {
           cx: "",
           cy: "",
@@ -123,31 +250,17 @@ export default new Vuex.Store({
       commit("svgBuilderOptionsComponent", payload.svgBuilderOptionsComponent);
       commit("setSVGViewComponent", payload.svgViewComponent);
       commit("svgModeUpdate", payload.svgMode);
-      commit("setCircleSvgOptions", payload.circleSVGOptions);
-      state.circleSVGPreset = payload.circleSVGPreset;
-      
-      for (var data in payload.circleOptionsComponent){
-        let dat = {label : data, value: payload.circleOptionsComponent[data]};
+      commit("setCircleSvgOptions", payload.circleState.circleSVGOptions);
+      state.circleState.circleSVGPreset = payload.circleState.circleSVGPreset;
+
+      for (var data in payload.circleState.circleOptionsComponent){
+        let dat = {label : data, value: payload.circleState.circleOptionsComponent[data]};
 
         commit("circleOptionsComponentUpdate", dat);
       }
-    },
-    setCircleOptionsComponentUpdate: ({ commit }, payloads = {mode : "init"}) => {
-      let data = {
-        label : "",
-        value: ""
-      };
-
-      for (let payload in payloads) {
-        if (payload !== "mode"){
-          data.label = payload;
-          data.value = payloads[payload];
-        }
-      }
-
-      commit("circleOptionsComponentUpdate", data);
-      payloads.mode !== "init" ? commit("saveToLocalStorage") : "";
     }
   },
-  modules: {}
+  modules: {
+    circleState
+  }
 });

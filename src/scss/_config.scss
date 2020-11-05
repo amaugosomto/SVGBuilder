@@ -120,6 +120,12 @@ $spaceAmounts: (1, 2, 3, 4, 5);
   .mb-#{$space} {
     margin-bottom: #{$space}rem;
   }
+  .ml-#{$space} {
+    margin-left: #{$space}rem;
+  }
+  .mr-#{$space} {
+    margin-right: #{$space}rem;
+  }
 
   .p-#{$space} {
     padding: #{$space}rem;
@@ -129,6 +135,18 @@ $spaceAmounts: (1, 2, 3, 4, 5);
   }
   .px-#{$space} {
     padding: 0 #{$space}rem;
+  }
+  .pt-#{$space} {
+    padding-top: #{$space}rem;
+  }
+  .pb-#{$space} {
+    padding-bottom: #{$space}rem;
+  }
+  .pl-#{$space} {
+    padding-left: #{$space}rem;
+  }
+  .pr-#{$space} {
+    padding-right: #{$space}rem;
   }
 }
 
