@@ -101,7 +101,7 @@ import { mapGetters } from "vuex";
 import { mapState } from "vuex";
 
 import { required } from "../../misc/validators";
-import { validatorMixin } from "../../misc/mixins";
+import { generalMixin } from "../../misc/mixins";
 
 export default {
   data() {
@@ -160,33 +160,6 @@ export default {
       }
       
     },
-    drawSVG(){
-      let svgOptionsValue = document.getElementById("svgMode").value;
-      let validated = false;
-
-      if (svgOptionsValue === "circle"){
-        validated = this.validateCircleSVGOptions();
-      }
-
-      if (validated === false)
-        return;
-
-      let circleData = {
-        cx: this.circleState.circleOptionsComponent.cx,
-        cy: this.circleState.circleOptionsComponent.cy,
-        r: this.circleState.circleOptionsComponent.r,
-        strokeWidth: this.circleState.circleOptionsComponent.strokeWidth,
-        stroke: this.circleState.circleOptionsComponent.stroke,
-        fill: this.circleState.circleOptionsComponent.fill,
-      }
-
-      let payload = {
-        data : circleData,
-        svgSelectedOption: document.getElementById("svgMode").value
-      }
-
-      this.saveSVGValues(payload);
-    },
     ...mapActions([
       "saveSVGValues",
       "setCircleOptionsComponentUpdate"
@@ -200,41 +173,12 @@ export default {
       let strokewidth = required("strokewidth");
       let fill = required("fill");
 
-      if (ctx === false){
-        this.toggleValidationElement("ctxValidation", false);
-      } else {
-        this.toggleValidationElement("ctxValidation", true);
-      }
-
-      if (cy === false ) {
-        this.toggleValidationElement("cyValidation", false);
-      } else {
-        this.toggleValidationElement("cyValidation", true);
-      }
-
-      if (r === false ) {
-        this.toggleValidationElement("rValidation", false);
-      } else {
-        this.toggleValidationElement("rValidation", true);
-      }
-
-      if (stroke === false ) {
-        this.toggleValidationElement("strokeValidation", false);
-      } else {
-        this.toggleValidationElement("strokeValidation", true);
-      }
-
-      if (strokewidth === false ) {
-        this.toggleValidationElement("strokewidthValidation", false);
-      } else {
-        this.toggleValidationElement("strokewidthValidation", true);
-      }
-
-      if (fill === false ) {
-        this.toggleValidationElement("fillValidation", false);
-      } else {
-        this.toggleValidationElement("fillValidation", true);
-      }
+      this.toggleValidationElement("ctxValidation", ctx);
+      this.toggleValidationElement("cyValidation", cy);
+      this.toggleValidationElement("rValidation", r);
+      this.toggleValidationElement("strokeValidation", stroke);
+      this.toggleValidationElement("strokewidthValidation", strokewidth);
+      this.toggleValidationElement("fillValidation", fill);
 
       if (!ctx || !cy || !r || !stroke || !strokewidth || !fill)
         return false;
@@ -242,13 +186,13 @@ export default {
       return true;
     },
     clearFields(){
-      this.circleOptionsComponent.cx = "",
-      this.circleOptionsComponent.cy = "",
-      this.circleOptionsComponent.r = "",
-      this.circleOptionsComponent.strokeWidth = "",
-      this.circleOptionsComponent.stroke = "select",
-      this.circleOptionsComponent.fill = "select"
-      this.$store.state.circleSVGPreset = "select";
+      this.circleState.circleOptionsComponent.cx = "",
+      this.circleState.circleOptionsComponent.cy = "",
+      this.circleState.circleOptionsComponent.r = "",
+      this.circleState.circleOptionsComponent.strokeWidth = "",
+      this.circleState.circleOptionsComponent.stroke = "select",
+      this.circleState.circleOptionsComponent.fill = "select"
+      this.$store.state.circleState.circleSVGPreset = "select";
 
       var x = document.getElementsByClassName("validator");
       for (var i = 0; i < x.length; i++) {
@@ -299,6 +243,6 @@ export default {
     }
 
   },
-  mixins: [ validatorMixin ]
+  mixins: [ generalMixin ]
 }
 </script>

@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import circleState from './modules/circleSVG';
+import polygonState from './modules/poygonSVG';
 
 Vue.use(Vuex);
 
@@ -193,23 +194,26 @@ export default new Vuex.Store({
         svgViewComponent: "",
         svgMode: "select",
         colors,
-        circleSVGOptions: {
-          cx: "",
-          cy: "",
-          r: "",
-          stroke: "select",
-          strokeWidth: "",
-          fill: "select"
-        },
-        circleOptionsComponent: {
-          cx: "",
-          cy: "",
-          r: "",
-          stroke: "select",
-          strokeWidth: "",
-          fill: "select"
-        },
-        circleSVGPreset: "select"
+        circleState : {
+          circleSVGOptions: {
+            cx: "",
+            cy: "",
+            r: "",
+            stroke: "select",
+            strokeWidth: "",
+            fill: "select"
+          },
+          circleOptionsComponent: {
+            cx: "",
+            cy: "",
+            r: "",
+            stroke: "select",
+            strokeWidth: "",
+            fill: "select"
+          },
+          circleSVGPreset: "select"
+        }
+        
       }
 
       Object.assign(state, initialState);
@@ -229,17 +233,26 @@ export default new Vuex.Store({
         default:
           commit("svgBuilderOptionsComponent", "");
       }
+
+      commit("saveToLocalStorage");
     },
     saveSVGValues: ({ commit }, payload) => {
       let svgOptions = payload.svgSelectedOption;
       
-      commit("setCircleSvgOptions", payload.data);
-
       switch (svgOptions) {
         case "circle":
+          commit("setCircleSvgOptions", payload.data);
           commit("setSVGViewComponent", "CircleSVG");
+
           break;
-      
+        
+        case "polygon":
+          commit("setPolygonSvgOptions", payload.data);
+          commit("setSVGViewComponent", "");
+          commit("setSVGViewComponent", "PolygonSVG");
+
+          break;
+
         default:
           break;
       }
@@ -251,16 +264,25 @@ export default new Vuex.Store({
       commit("setSVGViewComponent", payload.svgViewComponent);
       commit("svgModeUpdate", payload.svgMode);
       commit("setCircleSvgOptions", payload.circleState.circleSVGOptions);
+      commit("setPolygonSvgOptions", payload.polygonState.polygonSVGOptions);
       state.circleState.circleSVGPreset = payload.circleState.circleSVGPreset;
+      state.polygonState.polygonSVGPreset = payload.polygonState.polygonSVGPreset;
 
-      for (var data in payload.circleState.circleOptionsComponent){
+      for (let data in payload.circleState.circleOptionsComponent){
         let dat = {label : data, value: payload.circleState.circleOptionsComponent[data]};
 
         commit("circleOptionsComponentUpdate", dat);
       }
+
+      for (let data in payload.polygonState.polygonOptionsComponent){
+        let dat = {label : data, value: payload.polygonState.polygonOptionsComponent[data]};
+
+        commit("polygonOptionsComponentUpdate", dat);
+      }
     }
   },
   modules: {
-    circleState
+    circleState,
+    polygonState
   }
 });

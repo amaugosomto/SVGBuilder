@@ -25,13 +25,10 @@ const getters = {
 }
 
 const mutations = {
-  setCircleSvgOptions: (state, value) => {
-    state.circleSVGOptions.cx = value.cx;
-    state.circleSVGOptions.cy = value.cy;
-    state.circleSVGOptions.r = value.r;
-    state.circleSVGOptions.stroke = value.stroke;
-    state.circleSVGOptions.strokeWidth = value.strokeWidth;
-    state.circleSVGOptions.fill = value.fill;
+  setCircleSvgOptions: (state, values) => {
+    for (const value in values) {
+      state.circleSVGOptions[value] = values[value];
+    }
   },
   circleOptionsComponentUpdate: (state, data) => {
     state.circleOptionsComponent[data.label] = data.value;

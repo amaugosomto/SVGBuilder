@@ -43,14 +43,17 @@ import { mapActions } from 'vuex';
 import Header from "./Header";
 import CircleOptions from './SVG/CircleOptions';
 import PolygonOptions from './SVG/PolygonOptions';
+
 import CircleSVG from './SVG/CircleSVG';
+import PolygonSVG from './SVG/PolygonSVG';
 
 export default {
   components: {
     AppHeader: Header,
     CircleOptions,
     PolygonOptions,
-    CircleSVG
+    CircleSVG,
+    PolygonSVG
   },
   data (){
     return {
