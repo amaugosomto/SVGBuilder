@@ -101,8 +101,8 @@ import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import { mapState } from "vuex";
 
-import { required } from "../../misc/validators";
-import { generalMixin } from "../../misc/mixins";
+import { required } from "../../../misc/validators";
+import { generalMixin } from "../../../misc/mixins";
 
 export default {
   data() {
@@ -239,13 +239,12 @@ export default {
       this.setPolygonOptionsComponentUpdate(payload);
     },
     clearFields(){
-      this.polygonState.circleOptionsComponent.cx = "",
-      this.polygonState.circleOptionsComponent.cy = "",
-      this.polygonState.circleOptionsComponent.r = "",
-      this.polygonState.circleOptionsComponent.strokeWidth = "",
-      this.polygonState.circleOptionsComponent.stroke = "select",
-      this.polygonState.circleOptionsComponent.fill = "select"
-      this.$store.state.polygonState.circleSVGPreset = "select";
+      this.polygonState.polygonOptionsComponent.points = "",
+      this.polygonState.polygonOptionsComponent.strokeWidth = "",
+      this.polygonState.polygonOptionsComponent.stroke = "select",
+      this.polygonState.polygonOptionsComponent.fillrule = "select",
+      this.polygonState.polygonOptionsComponent.fill = "select"
+      this.$store.state.polygonState.polygonSVGPreset = "select";
 
       var x = document.getElementsByClassName("validator");
       for (var i = 0; i < x.length; i++) {

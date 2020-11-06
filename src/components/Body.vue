@@ -41,11 +41,11 @@ import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 
 import Header from "./Header";
-import CircleOptions from './SVG/CircleOptions';
-import PolygonOptions from './SVG/PolygonOptions';
+import CircleOptions from './SVG/circleSVG/CircleOptions';
+import PolygonOptions from './SVG/polygonSVG/PolygonOptions';
 
-import CircleSVG from './SVG/CircleSVG';
-import PolygonSVG from './SVG/PolygonSVG';
+import CircleSVG from './SVG/circleSVG/CircleSVG';
+import PolygonSVG from './SVG/polygonSVG/PolygonSVG';
 
 export default {
   components: {

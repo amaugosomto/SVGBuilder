@@ -212,6 +212,23 @@ export default new Vuex.Store({
             fill: "select"
           },
           circleSVGPreset: "select"
+        },
+        polygonState: {
+          polygonSVGOptions: {
+            points: "",
+            fillrule: "",
+            stroke: "select",
+            strokeWidth: "",
+            fill: "select"
+          },
+          polygonOptionsComponent: {
+            points: "",
+            fillrule: "select",
+            stroke: "select",
+            strokeWidth: "",
+            fill: "select"
+          },
+          polygonSVGPreset: "select"
         }
         
       }

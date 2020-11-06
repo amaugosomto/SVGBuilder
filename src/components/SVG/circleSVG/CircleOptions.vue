@@ -23,14 +23,14 @@
       </div>
       
       <div class="mx-1">
-        <label for="cy">cy</label>
+        <label for="cy"> <span style="color: red">*</span> cy</label>
         <input type="number" min="0" id="cy" class="form-control" 
           name="search" placeholder="cy.." :value="cy" @input="updateValue($event)">
           <small id="cyValidation" class="validator" style="display:none"></small>
       </div>
       
       <div>
-        <label for="r">r</label>
+        <label for="r"> <span style="color: red">*</span> r</label>
         <input type="number" min="0" id="r" class="form-control" 
           name="search" placeholder="radius.." :value="r" @input="updateValue($event)">
           <small id="rValidation" class="validator" style="display:none"></small>
@@ -40,7 +40,7 @@
 
     <div class="options mt-1">
       <div>
-        <label for="stroke">stroke</label>
+        <label for="stroke"> <span style="color: red">*</span> stroke</label>
         <select name="" id="stroke" class="form-control" :value="stroke" @input="updateValue($event)">
           <option value="select">select</option>
           <option v-for="color in colors" :key="color" v-bind:value="color">
@@ -51,14 +51,14 @@
       </div>
       
       <div class="mx-1">
-        <label for="strokewidth">stroke width</label>
+        <label for="strokewidth"> <span style="color: red">*</span> stroke width</label>
         <input type="number" min="0" id="strokewidth" class="form-control" 
           name="search" placeholder="stroke width" :value="strokeWidth" @input="updateValue($event)">
         <small id="strokewidthValidation" class="validator" style="display:none"></small>
       </div>
       
       <div>
-        <label for="fill">fill</label>
+        <label for="fill"> <span style="color: red">*</span> fill</label>
         <select name="" id="fill" class="form-control" :value="fill" @input="updateValue($event)">
           <option value="select">select</option>
           <option v-for="color in colors" :key="color" v-bind:value="color">
@@ -100,8 +100,8 @@ import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import { mapState } from "vuex";
 
-import { required } from "../../misc/validators";
-import { generalMixin } from "../../misc/mixins";
+import { required } from "../../../misc/validators";
+import { generalMixin } from "../../../misc/mixins";
 
 export default {
   data() {
