@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import circleState from './modules/circleSVG';
 import polygonState from './modules/poygonSVG';
+import rectangleState from './modules/rectangleSVG';
 
 Vue.use(Vuex);
 
@@ -157,6 +158,79 @@ const colors = [
   "YellowGreen",
 ]
 
+const initialState = {
+  svgBuilderOptionsComponent: "",
+  svgViewComponent: "",
+  svgMode: "select",
+  colors,
+  circleState : {
+    circleSVGOptions: {
+      cx: "",
+      cy: "",
+      r: "",
+      stroke: "select",
+      strokeWidth: "",
+      fill: "select"
+    },
+    circleOptionsComponent: {
+      cx: "",
+      cy: "",
+      r: "",
+      stroke: "select",
+      strokeWidth: "",
+      fill: "select"
+    },
+    circleSVGPreset: "select"
+  },
+  polygonState: {
+    polygonSVGOptions: {
+      points: "",
+      fillrule: "",
+      stroke: "select",
+      strokeWidth: "",
+      fill: "select"
+    },
+    polygonOptionsComponent: {
+      points: "",
+      fillrule: "select",
+      stroke: "select",
+      strokeWidth: "",
+      fill: "select"
+    },
+    polygonSVGPreset: "select"
+  },
+  rectangleState: {
+    rectangleSVGOptions: {
+      x: "",
+      y: "",
+      rx: "",
+      ry: "",
+      width: "",
+      height: "",
+      fillOpacity: "",
+      strokeOpacity: "",
+      stroke: "select",
+      strokeWidth: "",
+      fill: "select"
+    },
+    rectangleOptionsComponent: {
+      x: "",
+      y: "",
+      rx: "",
+      ry: "",
+      width: "",
+      height: "",
+      fillOpacity: "",
+      strokeOpacity: "",
+      stroke: "select",
+      strokeWidth: "",
+      fill: "select"
+    },
+    rectangleSVGPreset: "select"
+  }
+  
+}
+
 export default new Vuex.Store({
   state:{ 
     svgBuilderOptionsComponent: "",
@@ -173,6 +247,9 @@ export default new Vuex.Store({
     },
     getColors : state => {
       return state.colors
+    },
+    getInitialRectangleOptionsState: () => {
+      return { ...initialState.rectangleState.rectangleOptionsComponent };
     }
   },
   mutations: {
@@ -189,50 +266,7 @@ export default new Vuex.Store({
       state.svgMode = value;
     },
     resetAll : state => {
-      let initialState = {
-        svgBuilderOptionsComponent: "",
-        svgViewComponent: "",
-        svgMode: "select",
-        colors,
-        circleState : {
-          circleSVGOptions: {
-            cx: "",
-            cy: "",
-            r: "",
-            stroke: "select",
-            strokeWidth: "",
-            fill: "select"
-          },
-          circleOptionsComponent: {
-            cx: "",
-            cy: "",
-            r: "",
-            stroke: "select",
-            strokeWidth: "",
-            fill: "select"
-          },
-          circleSVGPreset: "select"
-        },
-        polygonState: {
-          polygonSVGOptions: {
-            points: "",
-            fillrule: "",
-            stroke: "select",
-            strokeWidth: "",
-            fill: "select"
-          },
-          polygonOptionsComponent: {
-            points: "",
-            fillrule: "select",
-            stroke: "select",
-            strokeWidth: "",
-            fill: "select"
-          },
-          polygonSVGPreset: "select"
-        }
-        
-      }
-
+      
       Object.assign(state, initialState);
 
       localStorage.removeItem("userState");
@@ -246,6 +280,9 @@ export default new Vuex.Store({
           break;
         case "polygon":
           commit("svgBuilderOptionsComponent", "PolygonOptions");
+          break;
+        case "rectangle":
+          commit("svgBuilderOptionsComponent", "RectangleOptions");
           break;
         default:
           commit("svgBuilderOptionsComponent", "");
@@ -266,6 +303,12 @@ export default new Vuex.Store({
         case "polygon":
           commit("setPolygonSvgOptions", payload.data);
           commit("setSVGViewComponent", "PolygonSVG");
+
+          break;
+        
+        case "rectangle":
+          commit("setRectangleSvgOptions", payload.data);
+          commit("setSVGViewComponent", "RectangleSVG");
 
           break;
 
@@ -299,6 +342,7 @@ export default new Vuex.Store({
   },
   modules: {
     circleState,
-    polygonState
+    polygonState,
+    rectangleState
   }
 });

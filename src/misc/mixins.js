@@ -58,6 +58,32 @@ export const generalMixin = {
         }
 
         this.saveSVGValues(payload);
+      } else if (svgSelectedOption === "rectangle"){
+        validated = this.validateRectangleSVGOptions();
+
+        if (validated === false)
+          return;
+
+        let rectangleData = {
+          x: this.rectangleState.rectangleOptionsComponent.x,
+          y: this.rectangleState.rectangleOptionsComponent.y,
+          rx: this.rectangleState.rectangleOptionsComponent.rx,
+          ry: this.rectangleState.rectangleOptionsComponent.ry,
+          width: this.rectangleState.rectangleOptionsComponent.width,
+          height: this.rectangleState.rectangleOptionsComponent.height,
+          fillOpacity: this.rectangleState.rectangleOptionsComponent.fillOpacity,
+          strokeOpacity: this.rectangleState.rectangleOptionsComponent.strokeOpacity,
+          stroke: this.rectangleState.rectangleOptionsComponent.stroke,
+          strokeWidth: this.rectangleState.rectangleOptionsComponent.strokeWidth,
+          fill: this.rectangleState.rectangleOptionsComponent.fill
+        }
+
+        let payload = {
+          data: rectangleData,
+          svgSelectedOption
+        }
+
+        this.saveSVGValues(payload);
       }
     }
   }

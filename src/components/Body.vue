@@ -15,6 +15,7 @@
                     <option value="select" selected>Select</option>
                     <option value="circle">Circle</option>
                     <option value="polygon">Polygon</option>
+                    <option value="rectangle">Rectangle</option>
                   </select>
                 </div>
                 
@@ -43,17 +44,21 @@ import { mapActions } from 'vuex';
 import Header from "./Header";
 import CircleOptions from './SVG/circleSVG/CircleOptions';
 import PolygonOptions from './SVG/polygonSVG/PolygonOptions';
+import RectangleOptions from './SVG/rectangleSVG/rectangleOptions';
 
 import CircleSVG from './SVG/circleSVG/CircleSVG';
 import PolygonSVG from './SVG/polygonSVG/PolygonSVG';
+import RectangleSVG from './SVG/rectangleSVG/rectangleSVG';
 
 export default {
   components: {
     AppHeader: Header,
     CircleOptions,
-    PolygonOptions,
     CircleSVG,
-    PolygonSVG
+    PolygonOptions,
+    PolygonSVG,
+    RectangleOptions,
+    RectangleSVG
   },
   data (){
     return {
