@@ -248,7 +248,6 @@ export default new Vuex.Store({
         
         case "polygon":
           commit("setPolygonSvgOptions", payload.data);
-          commit("setSVGViewComponent", "");
           commit("setSVGViewComponent", "PolygonSVG");
 
           break;
