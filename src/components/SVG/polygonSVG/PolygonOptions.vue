@@ -141,28 +141,31 @@ export default {
   },
   computed: {
     ...mapState(["polygonState"]),
-    ...mapGetters({colors : 'getColors'}),
+    ...mapGetters({
+      colors : 'getColors',
+      initialState: "getInitialPolygonOptionsState"
+    }),
     points() {
-      return this.polygonState.polygonOptionsComponent.points
+      return this.polygonState.polygonOptionsComponent.points;
     },
     fillrule() {
-      return this.polygonState.polygonOptionsComponent.fillrule
+      return this.polygonState.polygonOptionsComponent.fillrule;
     },
     stroke() {
-      return this.polygonState.polygonOptionsComponent.stroke
+      return this.polygonState.polygonOptionsComponent.stroke;
     },
     strokeWidth() {
-      return this.polygonState.polygonOptionsComponent.strokeWidth
+      return this.polygonState.polygonOptionsComponent.strokeWidth;
     },
     fill() {
-      return this.polygonState.polygonOptionsComponent.fill
+      return this.polygonState.polygonOptionsComponent.fill;
     },
     preset: {
       get() {
-        return this.polygonState.polygonSVGPreset
+        return this.polygonState.polygonOptionsComponent.polygonSVGPreset;
       },
       set (value) {
-        this.polygonState.polygonSVGPreset = value;
+        this.polygonState.polygonOptionsComponent.polygonSVGPreset = value;
         this.$store.commit("saveToLocalStorage");
       }
     }
@@ -177,11 +180,9 @@ export default {
       
       if (value !== "select"){
         let presetValue = this.presetValues[value];
+        presetValue.polygonSVGPreset = this.preset;
 
-        for (const val in presetValue) {
-          this.polygonState.polygonOptionsComponent[val] = presetValue[val];
-        }
-
+        this.$store.commit("setPolygonComponentState", presetValue);
         this.$store.commit("saveToLocalStorage");
       }
        
@@ -203,48 +204,20 @@ export default {
 
       return true;
     },
-    drawPolygonSVG(){
-      let svgOptionsValue = document.getElementById("svgMode").value;
-      let validated = false;
-
-      if (svgOptionsValue === "circle"){
-        validated = this.validateCircleSVGOptions();
-      }
-
-      if (validated === false)
-        return;
-
-      let circleData = {
-        cx: this.circleState.circleOptionsComponent.cx,
-        cy: this.circleState.circleOptionsComponent.cy,
-        r: this.circleState.circleOptionsComponent.r,
-        strokeWidth: this.circleState.circleOptionsComponent.strokeWidth,
-        stroke: this.circleState.circleOptionsComponent.stroke,
-        fill: this.circleState.circleOptionsComponent.fill,
-      }
-
-      let payload = {
-        data : circleData,
-        svgSelectedOption: document.getElementById("svgMode").value
-      }
-
-      this.saveSVGValues(payload);
-    },
     updateValue(event){
       let payload = {
         [event.target.id] : event.target.value,
-        mode: ""
+        mode: "",
+        isLast: true
       }
 
       this.setPolygonOptionsComponentUpdate(payload);
     },
     clearFields(){
-      this.polygonState.polygonOptionsComponent.points = "",
-      this.polygonState.polygonOptionsComponent.strokeWidth = "",
-      this.polygonState.polygonOptionsComponent.stroke = "select",
-      this.polygonState.polygonOptionsComponent.fillrule = "select",
-      this.polygonState.polygonOptionsComponent.fill = "select"
-      this.$store.state.polygonState.polygonSVGPreset = "select";
+      
+      let initialPolygonState = this.initialState;
+
+      this.$store.commit("setPolygonComponentState", initialPolygonState);
 
       var x = document.getElementsByClassName("validator");
       for (var i = 0; i < x.length; i++) {
@@ -255,6 +228,20 @@ export default {
       this.$store.commit("saveToLocalStorage");
     }
   },
-  mixins: [ generalMixin ]
+  mixins: [ generalMixin ],
+  created() {
+    let localStorageVal = JSON.parse(localStorage.getItem("userState"));
+    let hasStateProperty = Object.prototype.hasOwnProperty.call(localStorageVal, "polygonState");
+
+    if (localStorageVal !== null){
+      if (hasStateProperty){
+        this.$store.commit("setPolygonInitialState", ({...localStorageVal.polygonState}));
+      }else {
+        this.$store.commit("setPolygonInitialState", this.initialState);
+      }
+    } else {
+      this.$store.commit("setPolygonInitialState", this.initialState);
+    }
+  }
 }
 </script>

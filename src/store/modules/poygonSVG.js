@@ -9,29 +9,27 @@ const state = {
   polygonOptionsComponent: {
     points: "",
     fillrule: "select",
+    polygonSVGPreset: "select",
     stroke: "select",
     strokeWidth: "",
     fill: "select"
-  },
-  polygonSVGPreset: "select"
+  }
 }
 
 const actions = {
-  setPolygonOptionsComponentUpdate: ({ commit }, payloads = {mode : "init"}) => {
+  setPolygonOptionsComponentUpdate: ({ commit }, payloads) => {
     let data = {
       label : "",
       value: ""
     };
 
     for (let payload in payloads) {
-      if (payload !== "mode"){
-        data.label = payload;
-        data.value = payloads[payload];
-      }
+      data.label = payload;
+      data.value = payloads[payload];
     }
 
     commit("polygonOptionsComponentUpdate", data);
-    payloads.mode !== "init" ? commit("saveToLocalStorage") : "";
+    commit("saveToLocalStorage");
   }
 }
 
@@ -43,6 +41,12 @@ const mutations = {
   },
   polygonOptionsComponentUpdate: (state, data) => {
     state.polygonOptionsComponent[data.label] = data.value;
+  },
+  setPolygonInitialState: (state, data) => {
+    Object.assign(state, data)
+  },
+  setPolygonComponentState: (state, payload) => {
+    Object.assign(state.polygonOptionsComponent, payload);
   }
 }
 

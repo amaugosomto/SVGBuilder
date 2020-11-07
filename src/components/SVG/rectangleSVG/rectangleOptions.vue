@@ -195,7 +195,7 @@ export default {
     ...mapState(["rectangleState"]),
     ...mapGetters({
       colors : 'getColors',
-      getInitialRectangleOptionsState: "getInitialRectangleOptionsState"
+      initialState: "getInitialRectangleOptionsState"
     }),
     x() {
       return this.rectangleState.rectangleOptionsComponent.x;
@@ -232,10 +232,10 @@ export default {
     },
     preset: {
       get() {
-        return this.rectangleState.rectangleSVGPreset;
+        return this.rectangleState.rectangleOptionsComponent.rectangleSVGPreset;
       },
       set (value) {
-        this.rectangleState.rectangleSVGPreset = value;
+        this.rectangleState.rectangleOptionsComponent.rectangleSVGPreset = value;
         this.$store.commit("saveToLocalStorage");
       }
     }
@@ -250,14 +250,10 @@ export default {
       
       if (value !== "select"){
         let presetValue = this.presetValues[value];
+        presetValue.rectangleSVGPreset = this.preset;
 
-        for (const val in presetValue) {
-          let payload = {
-            [val] : presetValue[val],
-            mode: ""
-          }
-          this.setRectangleOptionsComponentUpdate(payload);
-        }
+        this.$store.commit("setRectangleComponentState", presetValue);
+        this.$store.commit("saveToLocalStorage");
       }
        
     },
@@ -281,31 +277,39 @@ export default {
     },
     updateValue(event){
       let payload = {
-        [event.target.id] : event.target.value,
-        mode: ""
+        [event.target.id] : event.target.value
       }
 
       this.setRectangleOptionsComponentUpdate(payload);
     },
     clearFields(){
-      let initialRectangleState = this.getInitialRectangleOptionsState;
+      let initialRectangleState = this.initialState;
 
-      for (let state in initialRectangleState){
-        let payload = {
-          [state] : initialRectangleState[state],
-          mode: ""
-        }
-        this.setRectangleOptionsComponentUpdate(payload);
-      }
-      this.rectangleState.rectangleSVGPreset = "select";
+      this.$store.commit("setRectangleComponentState", initialRectangleState);
 
       var x = document.getElementsByClassName("validator");
       for (var i = 0; i < x.length; i++) {
           x[i].style.display = "none";
           x[i].innerHTML = "";
       }
+      this.$store.commit("saveToLocalStorage");
     }
   },
-  mixins: [ generalMixin ]
+  mixins: [ generalMixin ],
+  created() {
+    let localStorageVal = JSON.parse(localStorage.getItem("userState"));
+
+    if (localStorageVal !== null){
+      let hasStateProperty = Object.prototype.hasOwnProperty.call(localStorageVal, "rectangleState");
+
+      if (hasStateProperty){
+        this.$store.commit("setRectangleInitialState", ({...localStorageVal.rectangleState}));
+      }else {
+        this.$store.commit("setRectangleInitialState", this.initialState);
+      }
+    } else {
+      this.$store.commit("setRectangleInitialState", this.initialState);
+    }
+  }
 }
 </script>

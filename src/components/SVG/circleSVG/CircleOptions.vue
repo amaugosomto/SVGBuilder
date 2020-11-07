@@ -148,14 +148,9 @@ export default {
 
       if (value !== "select"){
         let presetValue = this.presetColors[value];
+        presetValue.circleSVGPreset = this.preset;
 
-        this.circleState.circleOptionsComponent.cx = presetValue.cx;
-        this.circleState.circleOptionsComponent.cy = presetValue.cy;
-        this.circleState.circleOptionsComponent.r = presetValue.r;
-        this.circleState.circleOptionsComponent.strokeWidth = presetValue.strokeWidth;
-        this.circleState.circleOptionsComponent.stroke = presetValue.stroke;
-        this.circleState.circleOptionsComponent.fill = presetValue.fill;
-
+        this.$store.commit("setCircleComponentState", presetValue);
         this.$store.commit("saveToLocalStorage");
       }
       
@@ -186,26 +181,20 @@ export default {
       return true;
     },
     clearFields(){
-      this.circleState.circleOptionsComponent.cx = "",
-      this.circleState.circleOptionsComponent.cy = "",
-      this.circleState.circleOptionsComponent.r = "",
-      this.circleState.circleOptionsComponent.strokeWidth = "",
-      this.circleState.circleOptionsComponent.stroke = "select",
-      this.circleState.circleOptionsComponent.fill = "select"
-      this.$store.state.circleState.circleSVGPreset = "select";
+      let initialCircleState = this.initialState;
+
+      this.$store.commit("setCircleComponentState", initialCircleState);
 
       var x = document.getElementsByClassName("validator");
       for (var i = 0; i < x.length; i++) {
           x[i].style.display = "none";
           x[i].innerHTML = "";
       }
-
       this.$store.commit("saveToLocalStorage");
     },
     updateValue(event){
       let payload = {
-        [event.target.id] : event.target.value,
-        mode: ""
+        [event.target.id] : event.target.value
       }
 
       this.setCircleOptionsComponentUpdate(payload);
@@ -213,7 +202,10 @@ export default {
   },
   computed: {
     ...mapState(["circleState"]),
-    ...mapGetters({colors : 'getColors'}),
+    ...mapGetters({
+      colors : 'getColors', 
+      initialState:"getInitialCircleOptionsState"
+    }),
     cx() {
       return this.circleState.circleOptionsComponent.cx;
     },
@@ -234,15 +226,30 @@ export default {
     },
     preset: {
       get() {
-        return this.circleState.circleSVGPreset
+        return this.circleState.circleOptionsComponent.circleSVGPreset;
       },
       set (value) {
-        this.circleState.circleSVGPreset = value;
+        this.circleState.circleOptionsComponent.circleSVGPreset = value;
         this.$store.commit("saveToLocalStorage");
       }
     }
 
   },
-  mixins: [ generalMixin ]
+  mixins: [ generalMixin ],
+  created() {
+    let localStorageVal = JSON.parse(localStorage.getItem("userState"));
+    
+    if (localStorageVal !== null){
+      let hasStateProperty = Object.prototype.hasOwnProperty.call(localStorageVal.circleState, "cx");
+
+      if (hasStateProperty){
+        this.$store.commit("setCircleInitialState", ({...localStorageVal.circleState}));
+      }else {
+        this.$store.commit("setCircleInitialState", this.initialState);
+      }
+    } else {
+      this.$store.commit("setCircleInitialState", this.initialState);
+    }
+  }
 }
 </script>

@@ -71,7 +71,7 @@ export default {
     },
     ...mapActions([
       'toggleComponent',
-      'setInitialState'
+      'setBaseState'
     ])
   },
   computed: {
@@ -92,7 +92,7 @@ export default {
     let localStorageVal = localStorage.getItem("userState");
 
     if (localStorageVal !== null){
-      this.setInitialState(JSON.parse(localStorageVal));
+      this.setBaseState(JSON.parse(localStorageVal));
     }
   }
 };

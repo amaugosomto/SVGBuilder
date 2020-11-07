@@ -17,6 +17,7 @@ const state = {
     y: "",
     rx: "",
     ry: "",
+    rectangleSVGPreset: "select",
     width: "",
     height: "",
     fillOpacity: "",
@@ -24,8 +25,7 @@ const state = {
     stroke: "select",
     strokeWidth: "",
     fill: "select"
-  },
-  rectangleSVGPreset: "select"
+  }
 }
 
 const getters = {
@@ -45,25 +45,29 @@ const mutations = {
   },
   rectangleOptionsComponentUpdate: (state, data) => {
     state.rectangleOptionsComponent[data.label] = data.value;
+  },
+  setRectangleInitialState: (state, data) => {
+    Object.assign(state, data)
+  },
+  setRectangleComponentState: (state, payload) => {
+    Object.assign(state.rectangleOptionsComponent, payload);
   }
 }
 
 const actions = {
-  setRectangleOptionsComponentUpdate: ({ commit }, payloads = {mode : "init"}) => {
+  setRectangleOptionsComponentUpdate: ({ commit }, payloads) => {
     let data = {
       label : "",
       value: ""
     };
 
     for (let payload in payloads) {
-      if (payload !== "mode"){
-        data.label = payload;
-        data.value = payloads[payload];
-      }
+      data.label = payload;
+      data.value = payloads[payload];
     }
 
     commit("rectangleOptionsComponentUpdate", data);
-    payloads.mode !== "init" ? commit("saveToLocalStorage") : "";
+    commit("saveToLocalStorage");
   }
 }
 

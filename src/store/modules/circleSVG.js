@@ -11,11 +11,11 @@ const state = {
     cx: "",
     cy: "",
     r: "",
+    circleSVGPreset: "select",
     stroke: "select",
     strokeWidth: "",
     fill: "select"
-  },
-  circleSVGPreset: "select"
+  }
 }
 
 const getters = {
@@ -32,25 +32,29 @@ const mutations = {
   },
   circleOptionsComponentUpdate: (state, data) => {
     state.circleOptionsComponent[data.label] = data.value;
+  },
+  setCircleInitialState: (state, data) => {
+    Object.assign(state, data)
+  },
+  setCircleComponentState: (state, payload) => {
+    Object.assign(state.circleOptionsComponent, payload);
   }
 }
 
 const actions = {
-  setCircleOptionsComponentUpdate: ({ commit }, payloads = {mode : "init"}) => {
+  setCircleOptionsComponentUpdate: ({ commit }, payloads) => {
     let data = {
       label : "",
       value: ""
     };
 
     for (let payload in payloads) {
-      if (payload !== "mode"){
-        data.label = payload;
-        data.value = payloads[payload];
-      }
+      data.label = payload;
+      data.value = payloads[payload];
     }
 
     commit("circleOptionsComponentUpdate", data);
-    payloads.mode !== "init" ? commit("saveToLocalStorage") : "";
+    commit("saveToLocalStorage");
   }
 }
 

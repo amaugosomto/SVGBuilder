@@ -175,12 +175,12 @@ const initialState = {
     circleOptionsComponent: {
       cx: "",
       cy: "",
+      circleSVGPreset: "select",
       r: "",
       stroke: "select",
       strokeWidth: "",
       fill: "select"
-    },
-    circleSVGPreset: "select"
+    }
   },
   polygonState: {
     polygonSVGOptions: {
@@ -193,11 +193,11 @@ const initialState = {
     polygonOptionsComponent: {
       points: "",
       fillrule: "select",
+      polygonSVGPreset: "select",
       stroke: "select",
       strokeWidth: "",
       fill: "select"
-    },
-    polygonSVGPreset: "select"
+    }
   },
   rectangleState: {
     rectangleSVGOptions: {
@@ -218,6 +218,7 @@ const initialState = {
       y: "",
       rx: "",
       ry: "",
+      rectangleSVGPreset: "select",
       width: "",
       height: "",
       fillOpacity: "",
@@ -225,8 +226,7 @@ const initialState = {
       stroke: "select",
       strokeWidth: "",
       fill: "select"
-    },
-    rectangleSVGPreset: "select"
+    }
   }
   
 }
@@ -247,6 +247,12 @@ export default new Vuex.Store({
     },
     getColors : state => {
       return state.colors
+    },
+    getInitialCircleOptionsState: () => {
+      return { ...initialState.circleState.circleOptionsComponent };
+    },
+    getInitialPolygonOptionsState: () => {
+      return { ...initialState.polygonState.polygonOptionsComponent };
     },
     getInitialRectangleOptionsState: () => {
       return { ...initialState.rectangleState.rectangleOptionsComponent };
@@ -318,26 +324,26 @@ export default new Vuex.Store({
 
       commit("saveToLocalStorage");
     },
-    setInitialState: ({ commit, state }, payload) => {
+    setBaseState: ({ commit }, payload) => {
       commit("svgBuilderOptionsComponent", payload.svgBuilderOptionsComponent);
       commit("setSVGViewComponent", payload.svgViewComponent);
       commit("svgModeUpdate", payload.svgMode);
-      commit("setCircleSvgOptions", payload.circleState.circleSVGOptions);
-      commit("setPolygonSvgOptions", payload.polygonState.polygonSVGOptions);
-      state.circleState.circleSVGPreset = payload.circleState.circleSVGPreset;
-      state.polygonState.polygonSVGPreset = payload.polygonState.polygonSVGPreset;
+      //commit("setCircleSvgOptions", payload.circleState.circleSVGOptions);
+      //commit("setPolygonSvgOptions", payload.polygonState.polygonSVGOptions);
+      //state.circleState.circleSVGPreset = payload.circleState.circleSVGPreset;
+      //state.polygonState.polygonSVGPreset = payload.polygonState.polygonSVGPreset;
 
-      for (let data in payload.circleState.circleOptionsComponent){
-        let dat = {label : data, value: payload.circleState.circleOptionsComponent[data]};
+      // for (let data in payload.circleState.circleOptionsComponent){
+      //   let dat = {label : data, value: payload.circleState.circleOptionsComponent[data]};
 
-        commit("circleOptionsComponentUpdate", dat);
-      }
+      //   commit("circleOptionsComponentUpdate", dat);
+      // }
 
-      for (let data in payload.polygonState.polygonOptionsComponent){
-        let dat = {label : data, value: payload.polygonState.polygonOptionsComponent[data]};
+      // for (let data in payload.polygonState.polygonOptionsComponent){
+      //   let dat = {label : data, value: payload.polygonState.polygonOptionsComponent[data]};
 
-        commit("polygonOptionsComponentUpdate", dat);
-      }
+      //   commit("polygonOptionsComponentUpdate", dat);
+      // }
     }
   },
   modules: {
