@@ -14,7 +14,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    font-family: "Times New Roman", Times, serif;
+    
     ul {
       display: flex;
       list-style-type: none;
@@ -31,7 +32,24 @@
     a:hover {
       color: $secondary_color;
     }
+
+    .logo{
+      color: $secondary_color;
+      font-size: 2rem;
+    }
   }
+  
+@media(max-width: 700px){
+  nav {
+    li {
+      padding: 3px;
+    }
+    .logo{
+      font-size: 1.5rem;
+    }
+  }
+
+}
 </style>
 
 <script>

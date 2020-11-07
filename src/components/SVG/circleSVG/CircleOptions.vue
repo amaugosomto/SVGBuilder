@@ -22,7 +22,7 @@
           <small id="ctxValidation" class="validator" style="display:none"></small>
       </div>
       
-      <div class="mx-1">
+      <div>
         <label for="cy"> <span style="color: red">*</span> cy</label>
         <input type="number" min="0" id="cy" class="form-control" 
           name="search" placeholder="cy.." :value="cy" @input="updateValue($event)">
@@ -50,7 +50,7 @@
         <small id="strokeValidation" class="validator" style="display:none"></small>
       </div>
       
-      <div class="mx-1">
+      <div>
         <label for="strokewidth"> <span style="color: red">*</span> stroke width</label>
         <input type="number" min="0" id="strokewidth" class="form-control" 
           name="search" placeholder="stroke width" :value="strokeWidth" @input="updateValue($event)">
@@ -85,6 +85,10 @@
   }
   & .options {
     display: flex;
+
+    & > div:nth-child(2){
+      margin: 0 1rem;
+    }
   }
   label {
     display: block;
@@ -92,6 +96,20 @@
 }
 small{
   color: red;
+}
+  
+@media(max-width: 700px){
+  #circle {
+    & .options {
+      flex-direction: column;
+
+       & > div:nth-child(2){
+        margin: 0;
+      }
+    }
+   
+  }
+
 }
 </style>
 
@@ -235,21 +253,6 @@ export default {
     }
 
   },
-  mixins: [ generalMixin ],
-  created() {
-    let localStorageVal = JSON.parse(localStorage.getItem("userState"));
-    
-    if (localStorageVal !== null){
-      let hasStateProperty = Object.prototype.hasOwnProperty.call(localStorageVal.circleState, "cx");
-
-      if (hasStateProperty){
-        this.$store.commit("setCircleInitialState", ({...localStorageVal.circleState}));
-      }else {
-        this.$store.commit("setCircleInitialState", this.initialState);
-      }
-    } else {
-      this.$store.commit("setCircleInitialState", this.initialState);
-    }
-  }
+  mixins: [ generalMixin ]
 }
 </script>

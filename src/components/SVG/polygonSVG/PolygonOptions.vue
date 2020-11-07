@@ -14,7 +14,7 @@
     </div>
 
     <div class="options">
-      <div class="mr-1 form-group">
+      <div class="form-group">
         <label for="points"> <span style="color: red">*</span> points</label>
         <input class="form-control" type="text"
           id="points"  name="search" placeholder="points.."
@@ -46,7 +46,7 @@
         <small id="strokeValidation" class="validator" style="display:none"></small>
       </div>
       
-      <div class="mx-1 form-group">
+      <div class=" form-group">
         <label for="strokeWidth"> <span style="color: red">*</span> stroke width</label>
         <input type="number" min="0" id="strokeWidth" class="form-control" 
           name="search" placeholder="stroke width" 
@@ -83,6 +83,10 @@
   }
   & .options {
     display: flex;
+    
+    & > div:nth-child(2){
+      margin: 0 1rem;
+    }
   }
   label {
     display: block;
@@ -93,6 +97,24 @@ small{
 }
 .form-group{
   width: 100%;;
+}
+  
+@media(max-width: 700px){
+  #polygon {
+    & .options {
+      flex-direction: column;
+
+       & > div:nth-child(2){
+        margin: 0;
+      }
+
+      & > div {
+        width: 100% !important;
+      }
+    }
+   
+  }
+
 }
 </style>
 
@@ -206,9 +228,7 @@ export default {
     },
     updateValue(event){
       let payload = {
-        [event.target.id] : event.target.value,
-        mode: "",
-        isLast: true
+        [event.target.id] : event.target.value
       }
 
       this.setPolygonOptionsComponentUpdate(payload);
@@ -228,20 +248,6 @@ export default {
       this.$store.commit("saveToLocalStorage");
     }
   },
-  mixins: [ generalMixin ],
-  created() {
-    let localStorageVal = JSON.parse(localStorage.getItem("userState"));
-    let hasStateProperty = Object.prototype.hasOwnProperty.call(localStorageVal, "polygonState");
-
-    if (localStorageVal !== null){
-      if (hasStateProperty){
-        this.$store.commit("setPolygonInitialState", ({...localStorageVal.polygonState}));
-      }else {
-        this.$store.commit("setPolygonInitialState", this.initialState);
-      }
-    } else {
-      this.$store.commit("setPolygonInitialState", this.initialState);
-    }
-  }
+  mixins: [ generalMixin ]
 }
 </script>

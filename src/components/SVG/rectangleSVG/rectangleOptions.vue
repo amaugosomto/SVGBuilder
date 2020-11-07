@@ -20,7 +20,7 @@
           :value="x" @input="updateValue($event)">
       </div>
 
-      <div class="mx-1">
+      <div class="">
         <label for="y">y</label>
         <input class="form-control" type="text"
           id="y"  name="search" placeholder="y.."
@@ -34,7 +34,7 @@
           :value="rx" @input="updateValue($event)">
       </div>
 
-      <div class="ml-1">
+      <div class="">
         <label for="ry">ry</label>
         <input class="form-control" type="text"
           id="ry"  name="search" placeholder="ry.."
@@ -51,7 +51,7 @@
         <small id="widthValidation" class="validator" style="display:none"></small>
       </div>
 
-      <div class="form-group mx-1 ">
+      <div class="form-group">
         <label for="height"> <span style="color: red">*</span> height</label>
         <input class="form-control" type="text"
           id="height"  name="search" placeholder="height.."
@@ -66,7 +66,7 @@
           :value="fillOpacity" @input="updateValue($event)">
       </div>
 
-      <div class="form-group ml-1">
+      <div class="form-group">
         <label for="strokeOpacity">stroke opacity</label>
         <input class="form-control" type="text"
           id="strokeOpacity"  name="search" placeholder="stroke opacity.."
@@ -87,7 +87,7 @@
         <small id="strokeValidation" class="validator" style="display:none"></small>
       </div>
       
-      <div class="mx-1 form-group">
+      <div class="form-group">
         <label for="strokeWidth"> <span style="color: red">*</span> stroke width</label>
         <input type="number" min="0" id="strokeWidth" class="form-control" 
           name="search" placeholder="stroke width" 
@@ -124,6 +124,14 @@
   }
   & .options {
     display: flex;
+    
+    & > div:nth-child(2){
+      margin: 0 1rem;
+    }
+    
+    & > div:nth-child(4){
+      margin-left: 1rem;
+    }
   }
   label {
     display: block;
@@ -134,6 +142,28 @@ small{
 }
 .form-group{
   width: 100%;;
+}
+  
+@media(max-width: 700px){
+  #rectangle {
+    & .options {
+      flex-direction: column;
+
+       & > div:nth-child(2){
+        margin: 0;
+      }
+
+      & > div {
+        width: 100% !important;
+      }
+
+      & > div:nth-child(4){
+        margin-left: 0;
+      }
+    }
+   
+  }
+
 }
 </style>
 
@@ -295,21 +325,6 @@ export default {
       this.$store.commit("saveToLocalStorage");
     }
   },
-  mixins: [ generalMixin ],
-  created() {
-    let localStorageVal = JSON.parse(localStorage.getItem("userState"));
-
-    if (localStorageVal !== null){
-      let hasStateProperty = Object.prototype.hasOwnProperty.call(localStorageVal, "rectangleState");
-
-      if (hasStateProperty){
-        this.$store.commit("setRectangleInitialState", ({...localStorageVal.rectangleState}));
-      }else {
-        this.$store.commit("setRectangleInitialState", this.initialState);
-      }
-    } else {
-      this.$store.commit("setRectangleInitialState", this.initialState);
-    }
-  }
+  mixins: [ generalMixin ]
 }
 </script>

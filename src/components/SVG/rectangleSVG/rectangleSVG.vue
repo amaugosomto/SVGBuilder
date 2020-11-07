@@ -40,4 +40,12 @@ export default {
   overflow: visible;
   position: absolute;
 }
+
+@media(max-width: 700px){
+  .rectangleSVG{
+    margin-top: 15rem;
+    margin-left: 15rem;
+  }
+
+}
 </style>

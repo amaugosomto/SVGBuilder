@@ -22,15 +22,30 @@
               </div>
               
               <keep-alive>
-                <component v-bind:is="svgBuilderOptionsComponent" /> 
+                <transition name="fade" mode="out-in">
+                  <component v-bind:is="svgBuilderOptionsComponent" /> 
+                </transition>
               </keep-alive>
 
             </div>
           </div>
         </div>
 
-        <div>
-            <component v-bind:is="getSVGViewComponent" />
+        <div class="mb-2">
+          <transition
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @after-enter="afterEnter"
+            @enter-cancelled="enterCancelled"
+
+            @before-leave="beforeLeave"
+            @leave="leave"
+            @after-leave="afterLeave"
+            @leave-cancelled="leaveCancelled"
+            :css="false"
+            >
+            <component v-bind:is="getSVGViewComponent" v-if="showSVGComponent"/>
+          </transition>
         </div>
       </div>
     </div>
@@ -45,6 +60,7 @@ import Header from "./Header";
 import CircleOptions from './SVG/circleSVG/CircleOptions';
 import PolygonOptions from './SVG/polygonSVG/PolygonOptions';
 import RectangleOptions from './SVG/rectangleSVG/rectangleOptions';
+import emptyComponent from "./emptyComponent";
 
 import CircleSVG from './SVG/circleSVG/CircleSVG';
 import PolygonSVG from './SVG/polygonSVG/PolygonSVG';
@@ -58,7 +74,8 @@ export default {
     PolygonOptions,
     PolygonSVG,
     RectangleOptions,
-    RectangleSVG
+    RectangleSVG,
+    emptyComponent
   },
   data (){
     return {
@@ -72,12 +89,59 @@ export default {
     ...mapActions([
       'toggleComponent',
       'setBaseState'
-    ])
+    ]),
+    beforeEnter(el) {
+      console.log('beforeEnter');
+      this.elementWidth = 100;
+      el.style.width = this.elementWidth + 'px';
+    },
+    enter(el, done) {
+      console.log('enter');
+      let round = 1;
+      const interval = setInterval(() => {
+        el.style.width = (this.elementWidth + round * 10) + 'px';
+        round++;
+        if (round > 15) {
+          clearInterval(interval);
+          done();
+        }
+      }, 20);
+    },
+    afterEnter() {
+      console.log('afterEnter');
+    },
+    enterCancelled() {
+      console.log('enterCancelled');
+    },
+    beforeLeave(el) {
+      console.log('beforeLeave');
+      this.elementWidth = 300;
+      el.style.width = this.elementWidth + 'px';
+    },
+    leave(el, done) {
+      console.log('leave');
+      let round = 1;
+      const interval = setInterval(() => {
+        el.style.width = (this.elementWidth - round * 10) + 'px';
+        round++;
+        if (round > 20) {
+          clearInterval(interval);
+          done();
+        }
+      }, 20);
+    },
+    afterLeave() {
+      console.log('afterLeave');
+    },
+    leaveCancelled() {
+      console.log('leaveCancelled');
+    }
   },
   computed: {
     ...mapGetters([
       'svgBuilderOptionsComponent',
-      'getSVGViewComponent'
+      'getSVGViewComponent',
+      "showSVGComponent"
     ]),
     svgMode : {
       get() {
@@ -110,8 +174,8 @@ body {
 
 .showcase {
   @include set-background($dark-color);
-  height: 100vh;
-  
+  min-height: 100vh;
+  background-image: linear-gradient(to right , lighten(#d6ffff, 30%), #C0C0C0);
   &-content {
     height: 100%;
     width: 100%;
@@ -121,12 +185,9 @@ body {
       display: flex;
       align-items: center;
       width: 50%;
-      //justify-content: center;
+      justify-content: center;
       margin-top: 30px;
-    }
-
-    & > div:nth-child(2){
-      justify-content: flex-end;
+      position: relative;
     }
 
     h1 {
@@ -139,8 +200,9 @@ body {
     }
   }
 }
+
 .card {
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: #fff;
   background-clip: border-box;
   border: 1px solid rgba(0,0,0,.125);
@@ -183,4 +245,77 @@ label {
   background: #3BF;
 }
 
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: opacity .4s;
+}
+
+.fade-leave-active {
+  transition: opacity .4s;
+  opacity: 0;
+}
+
+.slide-enter {
+  opacity: 0;
+}
+
+.slide-enter-active {
+  animation: slide-in 1s ease-out forwards;
+  transition: opacity .5s;
+}
+
+.slide-leave-active {
+  animation: slide-out 1s ease-out forwards;
+  transition: opacity 1s;
+  opacity: 0;
+}
+
+@media(max-width: 700px){
+  .showcase {
+    &-content{
+      flex-direction: column;
+
+      & > div {
+        width: 100%;
+      }
+
+      & > div:nth-child(2){
+        margin-top: 10px;
+      }
+
+      h1 {
+        font-size: 30px;
+        line-height: 1.2;
+      }
+
+    }
+  }
+  
+  #title{
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+}
+
+@keyframes slide-in {
+  from{
+    transform: translateY(20px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out {
+  from{
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(20px);
+  }
+}
 </style>

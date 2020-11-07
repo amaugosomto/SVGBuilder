@@ -31,17 +31,17 @@ $danger_color: red;
   padding: .25rem .5rem;
   font-size: .875rem;
   line-height: 1.5;
-  border-radius: .2rem;
+  border-radius: .5rem;
   cursor: pointer;
 
   &:hover{
-    transform: scale(.90);
+    transform: scale(.92);
   }
 }
 
 .btn-primary{
-  @include set-background(lighten($primary-color, 10%));
-
+  @include set-background(lighten($primary-color, 30%));
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
   &:hover{
     background-color: #fff;
     color: $primary-color;
@@ -50,8 +50,8 @@ $danger_color: red;
 }
 
 .btn-secondary{
-  @include set-background(lighten($secondary-color, 10%));
-
+  @include set-background($secondary-color);
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
   &:hover{
     background-color: #fff;
     color: $secondary-color;
@@ -89,8 +89,8 @@ $danger_color: red;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: .25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  border-radius: .55rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; 
 }
 
 .text-right {

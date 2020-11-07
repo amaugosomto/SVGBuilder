@@ -31,4 +31,11 @@ export default {
   overflow: visible;
   position: absolute;
 }
+
+@media(max-width: 700px){
+  .circleSVG{
+    margin-top: 15rem;
+  }
+
+}
 </style>

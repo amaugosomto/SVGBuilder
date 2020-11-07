@@ -1,5 +1,5 @@
 <template>
-  <svg width="200px" height="200px" class="polygonSVG" viewBox="300 0 200 200">
+  <svg width="200px" height="200px" class="polygonSVG">
     <polygon v-bind="points" v-bind:style="styleObject" />
 </svg>
 </template>
@@ -32,6 +32,5 @@ export default {
 <style lang="scss" scoped>
 .polygonSVG{
   overflow: visible;
-  position: absolute;
 }
 </style>

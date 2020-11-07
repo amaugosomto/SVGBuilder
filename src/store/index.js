@@ -236,6 +236,7 @@ export default new Vuex.Store({
     svgBuilderOptionsComponent: "",
     svgViewComponent: "",
     svgMode: "select",
+    show: true,
     colors
   },
   getters: {
@@ -256,6 +257,9 @@ export default new Vuex.Store({
     },
     getInitialRectangleOptionsState: () => {
       return { ...initialState.rectangleState.rectangleOptionsComponent };
+    },
+    showSVGComponent: state => {
+      return state.show;
     }
   },
   mutations: {
@@ -296,54 +300,47 @@ export default new Vuex.Store({
 
       commit("saveToLocalStorage");
     },
-    saveSVGValues: ({ commit }, payload) => {
+    saveSVGValues: ({ commit, state }, payload) => {
       let svgOptions = payload.svgSelectedOption;
       
-      switch (svgOptions) {
-        case "circle":
-          commit("setCircleSvgOptions", payload.data);
-          commit("setSVGViewComponent", "CircleSVG");
+      state.show = false;
 
-          break;
-        
-        case "polygon":
-          commit("setPolygonSvgOptions", payload.data);
-          commit("setSVGViewComponent", "PolygonSVG");
-
-          break;
-        
-        case "rectangle":
-          commit("setRectangleSvgOptions", payload.data);
-          commit("setSVGViewComponent", "RectangleSVG");
-
-          break;
-
-        default:
-          break;
-      }
-
-      commit("saveToLocalStorage");
+      setTimeout(function() {
+        switch (svgOptions) {
+          case "circle":
+            commit("setCircleSvgOptions", payload.data);
+            commit("setSVGViewComponent", "CircleSVG");
+  
+            break;
+          
+          case "polygon":
+            commit("setPolygonSvgOptions", payload.data);
+            commit("setSVGViewComponent", "PolygonSVG");
+  
+            break;
+          
+          case "rectangle":
+            commit("setRectangleSvgOptions", payload.data);
+            commit("setSVGViewComponent", "RectangleSVG");
+  
+            break;
+  
+          default:
+            break;
+        }
+  
+        commit("saveToLocalStorage");
+        state.show = true;
+      }, 1000);
+      
     },
     setBaseState: ({ commit }, payload) => {
       commit("svgBuilderOptionsComponent", payload.svgBuilderOptionsComponent);
       commit("setSVGViewComponent", payload.svgViewComponent);
       commit("svgModeUpdate", payload.svgMode);
-      //commit("setCircleSvgOptions", payload.circleState.circleSVGOptions);
-      //commit("setPolygonSvgOptions", payload.polygonState.polygonSVGOptions);
-      //state.circleState.circleSVGPreset = payload.circleState.circleSVGPreset;
-      //state.polygonState.polygonSVGPreset = payload.polygonState.polygonSVGPreset;
-
-      // for (let data in payload.circleState.circleOptionsComponent){
-      //   let dat = {label : data, value: payload.circleState.circleOptionsComponent[data]};
-
-      //   commit("circleOptionsComponentUpdate", dat);
-      // }
-
-      // for (let data in payload.polygonState.polygonOptionsComponent){
-      //   let dat = {label : data, value: payload.polygonState.polygonOptionsComponent[data]};
-
-      //   commit("polygonOptionsComponentUpdate", dat);
-      // }
+      commit("setPolygonInitialState", payload.polygonState);
+      commit("setRectangleInitialState", payload.rectangleState);
+      commit("setCircleInitialState", payload.circleState);
     }
   },
   modules: {
