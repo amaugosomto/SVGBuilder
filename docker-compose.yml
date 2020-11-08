@@ -6,7 +6,7 @@ services:
       context: ./
     ports:
       - "8080:8080"
-    container_name: vue-ui
+    container_name: SVGBuilder
     volumes:
        - ./app
        - /app/node_modules
