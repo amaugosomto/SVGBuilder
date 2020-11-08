@@ -28,7 +28,8 @@ export const generalMixin = {
           r: this.circleState.circleOptionsComponent.r,
           strokeWidth: this.circleState.circleOptionsComponent.strokeWidth,
           stroke: this.circleState.circleOptionsComponent.stroke,
-          fill: this.circleState.circleOptionsComponent.fill
+          fill: this.circleState.circleOptionsComponent.fill,
+          circleSVGPreset: this.circleState.circleOptionsComponent.circleSVGPreset
         }
 
         let payload = {
@@ -49,7 +50,8 @@ export const generalMixin = {
           fillrule: this.polygonState.polygonOptionsComponent.fillrule,
           stroke: this.polygonState.polygonOptionsComponent.stroke,
           strokeWidth: this.polygonState.polygonOptionsComponent.strokeWidth,
-          fill: this.polygonState.polygonOptionsComponent.fill
+          fill: this.polygonState.polygonOptionsComponent.fill,
+          polygonSVGPreset: this.polygonState.polygonOptionsComponent.polygonSVGPreset
         }
 
         let payload = {
@@ -75,7 +77,8 @@ export const generalMixin = {
           strokeOpacity: this.rectangleState.rectangleOptionsComponent.strokeOpacity,
           stroke: this.rectangleState.rectangleOptionsComponent.stroke,
           strokeWidth: this.rectangleState.rectangleOptionsComponent.strokeWidth,
-          fill: this.rectangleState.rectangleOptionsComponent.fill
+          fill: this.rectangleState.rectangleOptionsComponent.fill,
+          rectangleSVGPreset: this.rectangleState.rectangleOptionsComponent.rectangleSVGPreset
         }
 
         let payload = {

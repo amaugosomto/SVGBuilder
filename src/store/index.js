@@ -237,6 +237,8 @@ export default new Vuex.Store({
     svgViewComponent: "",
     svgMode: "select",
     show: true,
+    history: "select",
+    histories: [],
     colors
   },
   getters: {
@@ -260,6 +262,9 @@ export default new Vuex.Store({
     },
     showSVGComponent: state => {
       return state.show;
+    },
+    getHistories: state => {
+      return state.histories;
     }
   },
   mutations: {
@@ -280,6 +285,10 @@ export default new Vuex.Store({
       Object.assign(state, initialState);
 
       localStorage.removeItem("userState");
+    },
+    setHistoryValue: (state, payload) => {
+      state.histories = payload.histories;
+      state.history = payload.history;
     }
   },
   actions: {
@@ -328,7 +337,26 @@ export default new Vuex.Store({
           default:
             break;
         }
-  
+
+        let today = new Date();
+        let hour = today.getHours();
+        let min = today.getMinutes();
+        let sec = today.getSeconds();
+        let timeFormat = ` :${hour}:${min}:${sec} ${hour < 11 ? "am" : "pm"}`;
+
+        let historyObject = {
+          svgBuilderOptionsComponent: state.svgBuilderOptionsComponent,
+          svgViewComponent: state.svgViewComponent,
+          svgMode: state.svgMode,
+          payload: {
+            label : svgOptions,
+            time: timeFormat,
+            labelName : svgOptions + timeFormat,
+            data : payload.data
+          }
+        }
+
+        state.histories.push(historyObject);
         commit("saveToLocalStorage");
         state.show = true;
       }, 1000);
@@ -341,6 +369,68 @@ export default new Vuex.Store({
       commit("setPolygonInitialState", payload.polygonState);
       commit("setRectangleInitialState", payload.rectangleState);
       commit("setCircleInitialState", payload.circleState);
+
+      let data = {
+        histories: [...payload.histories], 
+        history: payload.history
+      }
+      commit("setHistoryValue", data);
+    },
+    onHistoryChange: ({commit, state}, payload) => {
+      let history = state.histories.find(element => element.payload.labelName === payload);
+      if (typeof history !== "undefined"){
+        
+        let componentData = {...history.payload.data};
+        let svgData = {...history.payload.data};
+
+        switch (history.payload.label) {
+          case "circle": {
+            let data = {
+              circleOptionsComponent: componentData,
+              circleSVGOptions: svgData
+            }
+
+            commit("setCircleInitialState", data);
+            break;
+          }
+          case "rectangle": {
+            let data = {
+              rectangleOptionsComponent: componentData,
+              rectangleSVGOptions: svgData
+            }
+
+            commit("setRectangleInitialState", data);
+            break;
+          }
+          case "polygon": {
+            let data = {
+              polygonOptionsComponent: componentData,
+              polygonSVGOptions: svgData
+            }
+
+            commit("setPolygonInitialState", data);
+            break;
+          }
+          default:
+            break;
+        }
+      }
+      state.show = false;
+
+      setTimeout(function() {
+        commit("svgBuilderOptionsComponent", history.svgBuilderOptionsComponent);
+        commit("setSVGViewComponent", history.svgViewComponent);
+        commit("svgModeUpdate", history.svgMode);
+        state.show = true;
+        commit("saveToLocalStorage");
+      }, 500)
+      
+    },
+    clearHistory: ({commit, state}) => {
+      state.histories = [];
+      state.history = "select";
+
+      commit("saveToLocalStorage");
     }
   },
   modules: {

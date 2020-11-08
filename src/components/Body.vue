@@ -19,6 +19,19 @@
                   </select>
                 </div>
                 
+                <div class="inputGroup">
+                  <label for="history">Select History</label>
+                  <div style="display:flex">
+                    <select name="history" id="history" v-model="history" class="form-control" @change="onHistoryChange($event.target.value)">
+                      <option value="select" selected>Select</option>
+                      <option v-for="history in getHistories" :key="history.payload.labelName" :value="history.payload.labelName">
+                        {{ history.payload.label +  history.payload.time}}
+                      </option>
+                    </select>
+                    <img :src="image" alt="" srcset="" width="30" class="ml-1" @click="clearHistory()">
+                  </div>
+                </div>
+                
               </div>
               
               <keep-alive>
@@ -56,6 +69,8 @@
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 
+import image from "../assets/trash.png";
+
 import Header from "./Header";
 import CircleOptions from './SVG/circleSVG/CircleOptions';
 import PolygonOptions from './SVG/polygonSVG/PolygonOptions';
@@ -79,6 +94,7 @@ export default {
   },
   data (){
     return {
+      image
     }
   },
   methods: {
@@ -88,15 +104,15 @@ export default {
     },
     ...mapActions([
       'toggleComponent',
-      'setBaseState'
+      'setBaseState',
+      "onHistoryChange",
+      "clearHistory"
     ]),
     beforeEnter(el) {
-      console.log('beforeEnter');
       this.elementWidth = 100;
       el.style.width = this.elementWidth + 'px';
     },
     enter(el, done) {
-      console.log('enter');
       let round = 1;
       const interval = setInterval(() => {
         el.style.width = (this.elementWidth + round * 10) + 'px';
@@ -108,18 +124,16 @@ export default {
       }, 20);
     },
     afterEnter() {
-      console.log('afterEnter');
+      // console.log('afterEnter');
     },
     enterCancelled() {
-      console.log('enterCancelled');
+      // console.log('enterCancelled');
     },
     beforeLeave(el) {
-      console.log('beforeLeave');
       this.elementWidth = 300;
       el.style.width = this.elementWidth + 'px';
     },
     leave(el, done) {
-      console.log('leave');
       let round = 1;
       const interval = setInterval(() => {
         el.style.width = (this.elementWidth - round * 10) + 'px';
@@ -131,17 +145,18 @@ export default {
       }, 20);
     },
     afterLeave() {
-      console.log('afterLeave');
+      // console.log('afterLeave');
     },
     leaveCancelled() {
-      console.log('leaveCancelled');
+      // console.log('leaveCancelled');
     }
   },
   computed: {
     ...mapGetters([
       'svgBuilderOptionsComponent',
       'getSVGViewComponent',
-      "showSVGComponent"
+      "showSVGComponent",
+      "getHistories"
     ]),
     svgMode : {
       get() {
@@ -149,6 +164,15 @@ export default {
       },
       set(value) {
         this.$store.commit("svgModeUpdate", value);
+      }
+    },
+    history : {
+      get() {
+        return this.$store.state.history;
+      },
+      set(value) {
+        this.$store.state.history = value;
+        this.$store.commit("saveToLocalStorage");
       }
     }
   },
@@ -199,6 +223,10 @@ body {
       justify-self: end;
     }
   }
+}
+
+img {
+  cursor: pointer;
 }
 
 .card {
