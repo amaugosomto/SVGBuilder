@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import circleState from './modules/circleSVG';
-import polygonState from './modules/poygonSVG';
+import polygonState from './modules/polygonSVG';
 import rectangleState from './modules/rectangleSVG';
 
 Vue.use(Vuex);
